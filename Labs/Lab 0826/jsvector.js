@@ -24,12 +24,16 @@ JSVector.prototype.getMagnitude = function(){
 // Set the angle (direction) of the vector,
 // retaining the magnitude.
 JSVector.prototype.setDirection = function(angle){
-  var mag = this.getMagnitude();
+  //var mag = this.getMagnitude();
+  var x2 = this.getMagnitude() / asin(angle);
+  var y2 = acos(angle) * this.getMagnitude();
+  this.x = this.x + x2;
+  this.y = this.y + y2;
 }
 
 // Get the direction (angle) of the vector
 JSVector.prototype.getDirection = function(){
-  Math.atan2(this.y, this.x);
+  return Math.atan2(this.y, this.x);
 }
 
 // Add another vector to this vector
@@ -46,16 +50,14 @@ JSVector.prototype.sub = function(v2){
 
 // Class method to return a new vector that is the sum of two vectors
 JSVector.addGetNew = function(v1,v2){
-  v1.x = v1.x + v2.x;
-  v1.y = v1.y + v2.y;
-  return v1;
+  var thing = new JSVector(v1.x + v2.x, v1.y + v2.y);
+  return thing;
 }
 
 // Class method to return a new vector that is the difference of two vectors
 JSVector.subGetNew = function(v1,v2){
-  v1.x = v1.x - v2.x;
-  v1.y = v1.y - v2.y;
-  return v1;
+  var thing = new JSVector(v1.x - v2.x, v1.y - v2.y);
+  return thing;
 }
 
 // Multiply this vector by a scalar
@@ -85,30 +87,38 @@ JSVector.prototype.limit = function(lim){
 
 // Get the distance between this vector and another one
 JSVector.prototype.distance = function(v2){
-
+  var a = this.x - v2.x;
+  var b = this.y - v2.y;
+  return Math.sqrt(a*a + b*b);
 }
 
 // Get square of the distance between this vector and another one
 JSVector.prototype.distanceSquared = function(v2){
-
+  var a = this.x - v2.x;
+  var b = this.y - v2.y;
+  return a*a + b*b;
 }
 
 // Rotate this vector by some number of radians
 // using the rotation matrix |  cos   -sin  |
 //                           |  sin   +cos  |
 JSVector.prototype.rotate = function(angle) {
-
+  var rotate = this.getDirection() + angle;
+  this.setDirection(rotate);
 }
 
 // Get the angle between this vector and another one
 JSVector.prototype.angleBetween = function(v2){
+  return this.getDirection() - v2.getDirection();
 }
 
 // Make a copy of this vector
 JSVector.prototype.copy = function(){
+  var thing = new JSVector(this.x, this.y);
+  return thing;
  }
 
 // Override inherited toString() to describe this instance
 JSVector.prototype.toString = function() {
-
+  return "the x is " this.x " and the y is " this.y
 }
