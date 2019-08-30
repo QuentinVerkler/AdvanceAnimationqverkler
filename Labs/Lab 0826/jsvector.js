@@ -10,10 +10,9 @@ function JSVector(x,y){
 // Set the magnitude of the vector,
 // retaining the angle (direction).
 JSVector.prototype.setMagnitude = function(mag){
-  var x2 = mag * cos(this.getDirection());
-  var y2 = mag * sin(this.getDirection());
-  this.x = this.x + x2;
-  this.y = this.y + y2;
+  var direction = this.getDirection();
+  this.x = mag * Math.cos(direction);
+  this.y = mag * Math.sin(direction);
 }
 
 // Get the magnitude of the vector using pythagorean theorem
@@ -24,11 +23,9 @@ JSVector.prototype.getMagnitude = function(){
 // Set the angle (direction) of the vector,
 // retaining the magnitude.
 JSVector.prototype.setDirection = function(angle){
-  //var mag = this.getMagnitude();
-  var x2 = this.getMagnitude() / asin(angle);
-  var y2 = acos(angle) * this.getMagnitude();
-  this.x = this.x + x2;
-  this.y = this.y + y2;
+  var mag = this.getMagnitude();
+  this.x = mag * Math.cos(angle);
+  this.y = Math.sin(angle) * mag;
 }
 
 // Get the direction (angle) of the vector
@@ -81,8 +78,8 @@ JSVector.prototype.normalize = function(){
 
 // Limit the magnitude of this vector
 JSVector.prototype.limit = function(lim){
-  if(this.mag >lim)
-    this.mag = lim;
+  if(this.getMagnitude() > lim)
+    this.setMagnitude(lim);
 }
 
 // Get the distance between this vector and another one
@@ -120,5 +117,5 @@ JSVector.prototype.copy = function(){
 
 // Override inherited toString() to describe this instance
 JSVector.prototype.toString = function() {
-  return "the x is " this.x " and the y is " this.y
+  return "the x is " + this.x + " and the y is " + this.y + ". The magnitude is " + this.getMagnitude(); + " and the direction is " + this.getDirection();
 }
